@@ -1,0 +1,22 @@
+Books
+DNA Computing Model: Watson-Crick Grammars. IIUM Press, 2017, ISBN: 978-967-418-687-6 (with N.L.M. Zulkufli)
+
+[Title] [Publisher] [Year] [ISBN] [Authors]
+
+
+Journal Paper
+An Overview of the Consensus Problem in the Control of Multi-Agent Systems. Automatika (Journal for Control, Measurement, Electronics, Computing and Communications), 59(2), 2018, pp. 143-157. (with R. Abdulghafor, S.S. Abdullah, A. Zeki, I. Al-Shaikhli) ISI, IF: 0.217, SCOPUS, etc.
+
+[Title] [Journal Title] [Volume & Issue No.] [Year] [Pages] [Authors] [IF] [Citation Databases]
+
+
+Book Chapters
+The Computational Power of Watson-Crick Grammars: Revisited. Bio-inspired Computing - Theories and Applications. Communications in Computer and Information Science, 681, 2016, pp. 215-225. (with N.L.M. Zulkufli, M. I.M. Tamrin, A. Messikh) Thomson ISI Proceedings, SCOPUS, ACM, etc.
+
+[Title] [Book Title] [Volume] [Year] [Pages] [Authors] [Citation Databases]
+
+
+Conference Papers
+Users’ Perspective of Software Quality. In: The Tenth WSEAS International Conference on SOFTWARE ENGINEERING, PARALLEL and DISTRIBUTED SYSTEMS - SEPADS 2011, pp. 84–90, Cambridge, UK, February 20-22, 2011. (with A.B. Al-Badareen, Z. Muda, M.A. Jabar, J. Din) Thomson ISI Proceedings, SCOPUS, ELSEVIER and Elsevier Bibliographic Database, etc.
+
+[Title] [Conference Title] [Pages] [Place] [Date] [Authors] [Citation Databases]

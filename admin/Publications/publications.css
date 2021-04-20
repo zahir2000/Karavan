@@ -1,0 +1,87 @@
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    border-radius: 5px;
+}
+
+@keyframes twinkle {
+    0% {
+        transform: scale(1, 1);
+        background: rgba(255, 255, 255, 0);
+        animation-timing-function: linear;
+    }
+
+    40% {
+        transform: scale(0.8, 0.8);
+        background: rgba(255, 255, 255, 1);
+        animation-timing-function: ease-out;
+    }
+
+    80% {
+        background: rgba(255, 255, 255, 0);
+        transform: scale(1, 1);
+    }
+
+    100% {
+        background: rgba(255, 255, 255, 0);
+        transform: scale(1, 1);
+    }
+}
+
+dialog[open] {
+    animation: appear .15s cubic-bezier(0, 1.8, 1, 1.8);
+}
+
+dialog::backdrop {
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0.5), rgba(54, 54, 54, 0.5));
+    backdrop-filter: blur(3px);
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateX(-3rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.input {
+    transition: border 0.2s ease-in-out;
+    min-width: 100px;
+}
+
+.input:focus+.label,
+.input:active+.label,
+.input.filled+.label {
+    font-size: .75rem;
+    transition: all 0.2s ease-out;
+    top: -0.3rem;
+    color: rgba(156, 163, 175);
+}
+
+.input:focus+.label {
+    color: rgba(55, 65, 81);
+}
+
+.label {
+    transition: all 0.2s ease-out;
+    top: 0.4rem;
+    left: 0;
+}
+
+.tooltip .tooltip-text {
+    visibility: hidden;
+    text-align: center;
+    padding: 2px 6px;
+    position: absolute;
+    z-index: 100;
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+}
