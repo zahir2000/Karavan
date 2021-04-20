@@ -5,5 +5,5 @@ $status = $_SESSION["status"];
 
 if ($status != LoginStatus::SUCCESSFUL) {
     session_destroy();
-    header('Location:index.php');
+    header('Location:/karavan/admin/index.php');
 }

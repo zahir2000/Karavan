@@ -8,11 +8,11 @@ $currentPage = "Home";
 <html lang="en">
 
 <head>
-    <title>Sherzod Turaev - Admin</title>
+    <title>Karavan - Admin</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="../customtail.css">
-    <script src="../../js/jquery.min.js"></script>
+    <script src="/karavan/javascript/jquery.min.js"></script>
     <script src="../../js/jquery-migrate-3.0.1.min.js"></script>
     <script src="../../js/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>

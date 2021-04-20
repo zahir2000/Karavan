@@ -7,7 +7,7 @@ class DatabaseConnection
     private function __construct()
     {
         $host = 'localhost';
-        $dbName = 'sherzod';
+        $dbName = 'karavan';
         $user = 'root';
         $password = '11234566z';
 
