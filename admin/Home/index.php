@@ -54,9 +54,7 @@ $currentPage = "Home";
 
 <body>
     <?php include_once '../Header.php'; ?>
-    <section class="homescreen p-10 min-h-screen flex md:flex-row text-white items-center justify-around bg-gray-800 flex-wrap sm:flex-col">
-        
-    </section>
+    <section class="homescreen p-10 min-h-screen flex md:flex-row text-white items-center justify-around bg-gray-800 flex-wrap sm:flex-col"></section>
     <script>
         for (var i = 0; i < 100; i++) {
             var star =
