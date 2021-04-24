@@ -34,4 +34,19 @@ class MenuConnection {
 
         return $menuItems;
     }
+
+    public function getMenuCategories() {
+        $query = "SELECT * FROM category";
+
+        $stmt = $this->db->getDb()->prepare($query);
+        $stmt->execute();
+
+        if ($stmt->rowCount() != 0) {
+            $category = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            $category = NULL;
+        }
+
+        return $category;
+    }
 }

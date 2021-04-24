@@ -71,13 +71,13 @@ $menuItems = $con->getMenuItems();
                 <div class="my-2 flex sm:flex-row flex-col justify-between">
                     <div class="flex flex-row mb-1 sm:mb-0">
                         <div class="relative mr-4">
-                            <button onclick="document.getElementById('new').showModal()" class="inline-flex items-center justify-center py-2 px-4 text-base leading-5 rounded-md border font-medium shadow-sm transition leading-tight ease-in-out duration-150 focus:outline-none focus:shadow-outline bg-green-600 border-green-600 text-gray-100 hover:bg-green-500 hover:border-green-500 hover:text-gray-100">
+                            <a href="New/" class="inline-flex items-center justify-center py-2 px-4 text-base leading-5 rounded-md border font-medium shadow-sm transition leading-tight ease-in-out duration-150 focus:outline-none focus:shadow-outline bg-green-600 border-green-600 text-gray-100 hover:bg-green-500 hover:border-green-500 hover:text-gray-100">
                                 <svg viewBox="0 0 20 20" enable-background="new 0 0 20 20" width="20" height="20" class="inline-block">
                                     <path fill="#FFFFFF" d="M16,10c0,0.553-0.048,1-0.601,1H11v4.399C11,15.951,10.553,16,10,16c-0.553,0-1-0.049-1-0.601V11H4.601
                                     C4.049,11,4,10.553,4,10c0-0.553,0.049-1,0.601-1H9V4.601C9,4.048,9.447,4,10,4c0.553,0,1,0.048,1,0.601V9h4.399
                                     C15.952,9,16,9.447,16,10z" />
                                 </svg>
-                            </button>
+                            </a>
                         </div>
                         <div class="relative">
                             <select class="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
@@ -92,7 +92,7 @@ $menuItems = $con->getMenuItems();
                             </div>
                         </div>
                         <div class="relative">
-                            <select class="appearance-none h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
+                            <select class="appearance-none h-full rounded-r border-t sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                                 <option>All</option>
                                 <option>Active</option>
                                 <option>Inactive</option>
@@ -111,7 +111,7 @@ $menuItems = $con->getMenuItems();
                                 </path>
                             </svg>
                         </span>
-                        <input placeholder="Search" class="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
+                        <input placeholder="Search" class="appearance-none rounded-r rounded-l border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
                     </div>
                 </div>
                 <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
@@ -250,12 +250,12 @@ $menuItems = $con->getMenuItems();
                                         </td>
                                         <td class="border-b border-gray-200 bg-white text-sm">
                                             <div class="flex justify-center">
-                                                <button class="bg-gray-300 mr-1 hover:bg-gray-400 text-gray-800 text-sm font-semibold py-2 px-4 rounded">
+                                                <a href="" class="bg-gray-300 mr-1 hover:bg-gray-400 text-gray-800 text-sm font-semibold py-2 px-4 rounded">
                                                     <span>Edit</span>
-                                                </button>
-                                                <button class="bg-red-300 hover:bg-gray-400 text-gray-800 text-sm font-semibold py-2 px-4 rounded">
+                                                </a>
+                                                <a href="" class="bg-red-300 hover:bg-gray-400 text-gray-800 text-sm font-semibold py-2 px-4 rounded">
                                                     <span>Delete</span>
-                                                </button>
+                                                </a>
                                             </div>
                                         </td>
                                     </tr>
