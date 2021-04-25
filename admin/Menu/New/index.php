@@ -12,6 +12,7 @@ $currentPage = "Menu";
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="../../tailwind.css">
+    <script src="../../../javascript/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
     <link href="https://unpkg.com/pattern.css" rel="stylesheet">
 
@@ -51,7 +52,7 @@ $currentPage = "Menu";
 
 <body>
     <?php include_once '../../Header.php'; ?>
-    <section class="homescreen p-10 min-h-screen flex md:flex-col text-white items-center justify-around bg-gray-800 flex-wrap sm:flex-col">
+    <form id="new-menu-item" method="POST" enctype="multipart/form-data" class="homescreen p-10 min-h-screen flex md:flex-col text-white items-center justify-around bg-gray-800 flex-wrap sm:flex-col">
         <main class="container mx-auto max-w-screen-lg h-full pb-5">
             <!-- file upload modal -->
             <article aria-label="File Upload Modal" class="relative h-full flex flex-col bg-white shadow-xl rounded-md" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" ondragleave="dragLeaveHandler(event);" ondragenter="dragEnterHandler(event);">
@@ -66,41 +67,47 @@ $currentPage = "Menu";
                 </div>
 
                 <!-- scroll area -->
-                <section class="h-full overflow-auto p-8 w-full h-full flex flex-col">
-                    <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="food-image">
+                <section class="h-full overflow-auto p-8 pb-6 w-full h-full flex flex-col">
+                    <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="foodImage">
                         Food Image
                     </label>
                     <header class="border-dashed border-2 border-gray-400 py-12 flex flex-col justify-center items-center">
                         <p class="mb-3 font-semibold text-gray-900 flex flex-wrap justify-center">
                             <span>Drag and drop your</span>&nbsp;<span>files anywhere or</span>
                         </p>
-                        <input id="hidden-input" type="file" multiple class="hidden" id="food-image" />
-                        <button id="button" class="mt-2 rounded text-sm font-semibold bg-gray-400 px-3 py-1 bg-gray-200 hover:bg-gray-300 focus:shadow-outline focus:outline-none">
-                            Upload a file
-                        </button>
+                        <input id="fileToUpload" name="fileToUpload" type="file" class="hidden" />
+                        <input type="button" id="button" value="Upload a file" class="mt-2 rounded text-sm font-semibold bg-gray-400 px-3 py-1 bg-gray-200 hover:bg-gray-300 focus:shadow-outline focus:outline-none">
                     </header>
-
-                    <h1 class="pt-8 pb-3 font-semibold sm:text-lg text-gray-900">
-                        To Upload
-                    </h1>
-
-                    <ul id="gallery" class="flex flex-1 flex-wrap -m-1">
+                    <ul id="gallery" class="flex flex-1 flex-wrap -m-1 pt-3">
                         <li id="empty" class="h-full w-full text-center flex flex-col items-center justify-center items-center">
                             <img class="mx-auto w-20" src="https://user-images.githubusercontent.com/507615/54591670-ac0a0180-4a65-11e9-846c-e55ffce0fe7b.png" alt="no data" />
                             <span class="text-sm text-gray-500">No Files Selected</span>
                         </li>
                     </ul>
                 </section>
-
+                <div class="md:w-1/3 px-3 mb-6 md:mb-0 pl-8 pb-3">
+                    <div class="group cursor-pointer relative inline-block">
+                        <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="food-image-name">
+                            Image Name
+                        </label>
+                        <div class="opacity-0 w-32 bg-black text-white text-center text-xs rounded-lg py-2 absolute z-10 group-hover:opacity-100 bottom-full -left-3/4 ml-14 px-3 pointer-events-none">
+                            Leave empty for original file name
+                            <svg class="absolute text-black h-2 w-full left-0 top-full" x="0px" y="0px" viewBox="0 0 255 255" xml:space="preserve">
+                                <polygon class="fill-current" points="0,0 127.5,127.5 255,0" />
+                            </svg>
+                        </div>
+                    </div>
+                    <input class="appearance-none block w-full bg-gray-100 text-gray-500 border border-red rounded py-3 px-4 mb-3" id="food-image-name" type="text" placeholder="somsa" required>
+                </div>
                 <!-- sticky footer -->
-                <footer class="flex justify-end px-8 pb-8 pt-4">
-                    <button id="submit" class="rounded text-sm font-semibold px-3 py-1 bg-blue-900 hover:bg-blue-700 text-white focus:shadow-outline focus:outline-none">
+                <!--<footer class="flex justify-end px-8 pb-8 pt-4">
+                    <button id="submit" type="submit" class="rounded text-sm font-semibold px-3 py-1 bg-blue-900 hover:bg-blue-700 text-white focus:shadow-outline focus:outline-none">
                         Upload
                     </button>
                     <button id="cancel" class="ml-3 rounded text-sm font-semibold bg-gray-400 px-3 py-1 hover:bg-gray-300 focus:shadow-outline focus:outline-none">
                         Cancel
                     </button>
-                </footer>
+                </footer>-->
             </article>
         </main>
 
@@ -160,165 +167,13 @@ $currentPage = "Menu";
             </li>
         </template>
 
-        <script>
-            const fileTempl = document.getElementById("file-template"),
-                imageTempl = document.getElementById("image-template"),
-                empty = document.getElementById("empty");
-
-            // use to store pre selected files
-            let FILES = {};
-
-            // check if file is of type image and prepend the initialied
-            // template to the target element
-            function addFile(target, file) {
-                const isImage = file.type.match("image.*"),
-                    objectURL = URL.createObjectURL(file);
-
-                const clone = isImage ?
-                    imageTempl.content.cloneNode(true) :
-                    fileTempl.content.cloneNode(true);
-
-                clone.querySelector("h1").textContent = file.name;
-                clone.querySelector("li").id = objectURL;
-                clone.querySelector(".delete").dataset.target = objectURL;
-                clone.querySelector(".size").textContent =
-                    file.size > 1024 ?
-                    file.size > 1048576 ?
-                    Math.round(file.size / 1048576) + "mb" :
-                    Math.round(file.size / 1024) + "kb" :
-                    file.size + "b";
-
-                isImage &&
-                    Object.assign(clone.querySelector("img"), {
-                        src: objectURL,
-                        alt: file.name
-                    });
-
-                empty.classList.add("hidden");
-                target.prepend(clone);
-
-                FILES[objectURL] = file;
-            }
-
-            const gallery = document.getElementById("gallery"),
-                overlay = document.getElementById("overlay");
-
-            // click the hidden input of type file if the visible button is clicked
-            // and capture the selected files
-            const hidden = document.getElementById("hidden-input");
-            document.getElementById("button").onclick = () => hidden.click();
-            hidden.onchange = (e) => {
-                for (const file of e.target.files) {
-                    addFile(gallery, file);
-                }
-            };
-
-            // use to check if a file is being dragged
-            const hasFiles = ({
-                    dataTransfer: {
-                        types = []
-                    }
-                }) =>
-                types.indexOf("Files") > -1;
-
-            // use to drag dragenter and dragleave events.
-            // this is to know if the outermost parent is dragged over
-            // without issues due to drag events on its children
-            let counter = 0;
-
-            // reset counter and append file to gallery when file is dropped
-            function dropHandler(ev) {
-                ev.preventDefault();
-                for (const file of ev.dataTransfer.files) {
-                    addFile(gallery, file);
-                    overlay.classList.remove("draggedover");
-                    counter = 0;
-                }
-            }
-
-            // only react to actual files being dragged
-            function dragEnterHandler(e) {
-                e.preventDefault();
-                if (!hasFiles(e)) {
-                    return;
-                }
-                ++counter && overlay.classList.add("draggedover");
-            }
-
-            function dragLeaveHandler(e) {
-                1 > --counter && overlay.classList.remove("draggedover");
-            }
-
-            function dragOverHandler(e) {
-                if (hasFiles(e)) {
-                    e.preventDefault();
-                }
-            }
-
-            // event delegation to caputre delete events
-            // fron the waste buckets in the file preview cards
-            gallery.onclick = ({
-                target
-            }) => {
-                if (target.classList.contains("delete")) {
-                    const ou = target.dataset.target;
-                    document.getElementById(ou).remove(ou);
-                    gallery.children.length === 1 && empty.classList.remove("hidden");
-                    delete FILES[ou];
-                }
-            };
-
-            // print all selected files
-            document.getElementById("submit").onclick = () => {
-                alert(`Submitted Files:\n${JSON.stringify(FILES)}`);
-                console.log(FILES);
-            };
-
-            // clear entire selection
-            document.getElementById("cancel").onclick = () => {
-                while (gallery.children.length > 0) {
-                    gallery.lastChild.remove();
-                }
-                FILES = {};
-                empty.classList.remove("hidden");
-                gallery.append(empty);
-            };
-        </script>
-
-        <style>
-            .hasImage:hover section {
-                background-color: rgba(5, 5, 5, 0.4);
-            }
-
-            .hasImage:hover button:hover {
-                background: rgba(5, 5, 5, 0.45);
-            }
-
-            #overlay p,
-            i {
-                opacity: 0;
-            }
-
-            #overlay.draggedover {
-                background-color: rgba(255, 255, 255, 0.7);
-            }
-
-            #overlay.draggedover p,
-            #overlay.draggedover i {
-                opacity: 1;
-            }
-
-            .group:hover .group-hover\:text-blue-800 {
-                color: #2b6cb0;
-            }
-        </style>
         <div class="bg-white container mx-auto max-w-screen-lg h-full shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
             <div class="-mx-3 md:flex mb-3">
                 <div class="md:w-1/2 px-3 mb-6 md:mb-0">
                     <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="food-name">
                         Name
                     </label>
-                    <input class="appearance-none block w-full bg-gray-100 text-gray-500 border border-red rounded py-3 px-4 mb-3" id="food-name" type="text" placeholder="Somsa">
+                    <input class="appearance-none block w-full bg-gray-100 text-gray-500 border border-red rounded py-3 px-4 mb-3" id="food-name" type="text" placeholder="Somsa" required>
                 </div>
                 <div class="md:w-1/2 px-3">
                     <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="food-category">
@@ -351,7 +206,7 @@ $currentPage = "Menu";
                     <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="food-description">
                         Description
                     </label>
-                    <input class="appearance-none block w-full bg-gray-100 text-gray-500 border border-grey-lighter rounded py-3 px-4" id="food-description" type="text" placeholder="Potatoes, Chicken">
+                    <input class="appearance-none block w-full bg-gray-100 text-gray-500 border border-grey-lighter rounded py-3 px-4" id="food-description" name="food-description" type="text" placeholder="Potatoes, Chicken">
                 </div>
             </div>
             <div class="-mx-3 md:flex mb-2">
@@ -359,10 +214,9 @@ $currentPage = "Menu";
                     <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="food-price">
                         Price
                     </label>
-                    <input class="appearance-none block w-full bg-gray-100 text-gray-500 border border-grey-lighter rounded py-3 px-4" id="food-price" type="text" placeholder="15.99">
+                    <input class="appearance-none block w-full bg-gray-100 text-gray-500 border border-grey-lighter rounded py-3 px-4" id="food-price" name="food-price" type="number" placeholder="15.99">
                 </div>
                 <div class="md:w-1/2 px-3">
-
                     <div class="group cursor-pointer relative inline-block border-gray-400 w-28">
                         <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="food-discount">
                             Discount
@@ -374,14 +228,14 @@ $currentPage = "Menu";
                             </svg>
                         </div>
                     </div>
-                    <input type="number" max="100" min="0" step="1" class="appearance-none block w-full bg-gray-100 text-gray-500 border border-grey-lighter rounded py-3 px-4" id="food-discount" type="text" value="0" placeholder="10">
+                    <input type="number" max="100" min="0" step="1" class="appearance-none block w-full bg-gray-100 text-gray-500 border border-grey-lighter rounded py-3 px-4" id="food-discount" name="food-discount" value="0" placeholder="10">
                 </div>
                 <div class="md:w-1/2 px-3">
                     <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="food-status">
                         Status
                     </label>
                     <div class="relative">
-                        <select class="block appearance-none w-full bg-gray-100 border border-grey-lighter text-gray-500 py-3 px-4 pr-8 rounded" id="food-status">
+                        <select class="block appearance-none w-full bg-gray-100 border border-grey-lighter text-gray-500 py-3 px-4 pr-8 rounded" id="food-status" name="food-status" required>
                             <option>Active</option>
                             <option>Inactive</option>
                         </select>
@@ -393,8 +247,186 @@ $currentPage = "Menu";
                     </div>
                 </div>
             </div>
+            <input type="submit" value="Submit" id="submit" name="submit" class="rounded text-sm font-semibold px-3 py-1 mt-4 pb-3 pt-3 bg-gray-700 hover:bg-gray-600 text-white focus:shadow-outline focus:outline-none">
         </div>
-    </section>
+    </form>
+
+    <script>
+        $("form#new-menu-item").submit(function() {
+            var formData = new FormData(this);
+
+            $.ajax({
+                url: 'upload.php',
+                type: 'POST',
+                data: formData,
+                async: false,
+                success: function(data) {
+                    alert(data)
+                },
+                error: function(data) {
+                    alert(data);
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+
+            return false;
+        });
+    </script>
+
+    <script>
+        const fileTempl = document.getElementById("file-template"),
+            imageTempl = document.getElementById("image-template"),
+            empty = document.getElementById("empty");
+
+        // use to store pre selected files
+        let FILES = {};
+
+        // check if file is of type image and prepend the initialied
+        // template to the target element
+        function addFile(target, file) {
+            const isImage = file.type.match("image.*"),
+                objectURL = URL.createObjectURL(file);
+
+            const clone = isImage ?
+                imageTempl.content.cloneNode(true) :
+                fileTempl.content.cloneNode(true);
+
+            clone.querySelector("h1").textContent = file.name;
+            clone.querySelector("li").id = objectURL;
+            clone.querySelector(".delete").dataset.target = objectURL;
+            clone.querySelector(".size").textContent =
+                file.size > 1024 ?
+                file.size > 1048576 ?
+                Math.round(file.size / 1048576) + "mb" :
+                Math.round(file.size / 1024) + "kb" :
+                file.size + "b";
+
+            isImage &&
+                Object.assign(clone.querySelector("img"), {
+                    src: objectURL,
+                    alt: file.name
+                });
+
+            empty.classList.add("hidden");
+            target.prepend(clone);
+
+            FILES[objectURL] = file;
+        }
+
+        const gallery = document.getElementById("gallery"),
+            overlay = document.getElementById("overlay");
+
+        // click the hidden input of type file if the visible button is clicked
+        // and capture the selected files
+        const hidden = document.getElementById("fileToUpload");
+        document.getElementById("button").onclick = () => hidden.click();
+        hidden.onchange = (e) => {
+            for (const file of e.target.files) {
+                addFile(gallery, file);
+            }
+        };
+
+        // use to check if a file is being dragged
+        const hasFiles = ({
+                dataTransfer: {
+                    types = []
+                }
+            }) =>
+            types.indexOf("Files") > -1;
+
+        // use to drag dragenter and dragleave events.
+        // this is to know if the outermost parent is dragged over
+        // without issues due to drag events on its children
+        let counter = 0;
+
+        // reset counter and append file to gallery when file is dropped
+        function dropHandler(ev) {
+            ev.preventDefault();
+            for (const file of ev.dataTransfer.files) {
+                addFile(gallery, file);
+                overlay.classList.remove("draggedover");
+                counter = 0;
+            }
+        }
+
+        // only react to actual files being dragged
+        function dragEnterHandler(e) {
+            e.preventDefault();
+            if (!hasFiles(e)) {
+                return;
+            }
+            ++counter && overlay.classList.add("draggedover");
+        }
+
+        function dragLeaveHandler(e) {
+            1 > --counter && overlay.classList.remove("draggedover");
+        }
+
+        function dragOverHandler(e) {
+            if (hasFiles(e)) {
+                e.preventDefault();
+            }
+        }
+
+        // event delegation to caputre delete events
+        // fron the waste buckets in the file preview cards
+        gallery.onclick = ({
+            target
+        }) => {
+            if (target.classList.contains("delete")) {
+                const ou = target.dataset.target;
+                document.getElementById(ou).remove(ou);
+                gallery.children.length === 1 && empty.classList.remove("hidden");
+                delete FILES[ou];
+            }
+        };
+
+        // print all selected files
+        //document.getElementById("submit").onclick = () => {
+        //   alert(`Submitted Files:\n${JSON.stringify(FILES)}`);
+        //    console.log(FILES);
+        //};
+
+        // clear entire selection
+        document.getElementById("cancel").onclick = () => {
+            while (gallery.children.length > 0) {
+                gallery.lastChild.remove();
+            }
+            FILES = {};
+            empty.classList.remove("hidden");
+            gallery.append(empty);
+        };
+    </script>
+
+    <style>
+        .hasImage:hover section {
+            background-color: rgba(5, 5, 5, 0.4);
+        }
+
+        .hasImage:hover button:hover {
+            background: rgba(5, 5, 5, 0.45);
+        }
+
+        #overlay p,
+        i {
+            opacity: 0;
+        }
+
+        #overlay.draggedover {
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        #overlay.draggedover p,
+        #overlay.draggedover i {
+            opacity: 1;
+        }
+
+        .group:hover .group-hover\:text-blue-800 {
+            color: #2b6cb0;
+        }
+    </style>
     <script>
         for (var i = 0; i < 100; i++) {
             var star =
