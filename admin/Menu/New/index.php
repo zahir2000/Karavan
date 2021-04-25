@@ -76,38 +76,26 @@ $currentPage = "Menu";
                             <span>Drag and drop your</span>&nbsp;<span>files anywhere or</span>
                         </p>
                         <input id="fileToUpload" name="fileToUpload" type="file" class="hidden" />
-                        <input type="button" id="button" value="Upload a file" class="mt-2 rounded text-sm font-semibold bg-gray-400 px-3 py-1 bg-gray-200 hover:bg-gray-300 focus:shadow-outline focus:outline-none">
+                        <input type="button" id="button" value="Upload a file" required class="mt-2 rounded text-sm font-semibold bg-gray-400 px-3 py-1 bg-gray-200 hover:bg-gray-300 focus:shadow-outline focus:outline-none">
                     </header>
-                    <ul id="gallery" class="flex flex-1 flex-wrap -m-1 pt-3">
+                    <ul id="gallery" class="flex flex-1 flex-wrap -m-1 pt-6 pb-4">
                         <li id="empty" class="h-full w-full text-center flex flex-col items-center justify-center items-center">
                             <img class="mx-auto w-20" src="https://user-images.githubusercontent.com/507615/54591670-ac0a0180-4a65-11e9-846c-e55ffce0fe7b.png" alt="no data" />
                             <span class="text-sm text-gray-500">No Files Selected</span>
                         </li>
                     </ul>
                 </section>
-                <div class="md:w-1/3 px-3 mb-6 md:mb-0 pl-8 pb-3">
-                    <div class="group cursor-pointer relative inline-block">
-                        <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="food-image-name">
-                            Image Name
-                        </label>
-                        <div class="opacity-0 w-32 bg-black text-white text-center text-xs rounded-lg py-2 absolute z-10 group-hover:opacity-100 bottom-full -left-3/4 ml-14 px-3 pointer-events-none">
-                            Leave empty for original file name
-                            <svg class="absolute text-black h-2 w-full left-0 top-full" x="0px" y="0px" viewBox="0 0 255 255" xml:space="preserve">
-                                <polygon class="fill-current" points="0,0 127.5,127.5 255,0" />
-                            </svg>
-                        </div>
-                    </div>
-                    <input class="appearance-none block w-full bg-gray-100 text-gray-500 border border-red rounded py-3 px-4 mb-3" id="food-image-name" type="text" placeholder="somsa" required>
-                </div>
+
                 <!-- sticky footer -->
-                <!--<footer class="flex justify-end px-8 pb-8 pt-4">
-                    <button id="submit" type="submit" class="rounded text-sm font-semibold px-3 py-1 bg-blue-900 hover:bg-blue-700 text-white focus:shadow-outline focus:outline-none">
+                <footer id="footerUploadError" class="flex justify-start px-8 pb-4 pt-4 bg-red-400 hidden">
+                    <!--<button id="submit" type="submit" class="rounded text-sm font-semibold px-3 py-1 bg-blue-900 hover:bg-blue-700 text-white focus:shadow-outline focus:outline-none">
                         Upload
                     </button>
                     <button id="cancel" class="ml-3 rounded text-sm font-semibold bg-gray-400 px-3 py-1 hover:bg-gray-300 focus:shadow-outline focus:outline-none">
                         Cancel
-                    </button>
-                </footer>-->
+                    </button>-->
+                    <span id="imageUploadError" class="text-sm text-gray-100 hidden"></span>
+                </footer>
             </article>
         </main>
 
@@ -170,17 +158,17 @@ $currentPage = "Menu";
         <div class="bg-white container mx-auto max-w-screen-lg h-full shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
             <div class="-mx-3 md:flex mb-3">
                 <div class="md:w-1/2 px-3 mb-6 md:mb-0">
-                    <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="food-name">
+                    <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="foodName">
                         Name
                     </label>
-                    <input class="appearance-none block w-full bg-gray-100 text-gray-500 border border-red rounded py-3 px-4 mb-3" id="food-name" type="text" placeholder="Somsa" required>
+                    <input class="appearance-none block w-full bg-gray-100 text-gray-500 border border-red rounded py-3 px-4 mb-3" name="foodName" id="foodName" type="text" placeholder="Somsa" required>
                 </div>
                 <div class="md:w-1/2 px-3">
                     <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="food-category">
                         Category
                     </label>
                     <div class="relative">
-                        <select class="block appearance-none w-full bg-gray-100 border border-grey-lighter text-gray-500 py-3 px-4 pr-8 rounded" id="food-category">
+                        <select class="block appearance-none w-full bg-gray-100 border border-grey-lighter text-gray-500 py-3 px-4 pr-8 rounded" id="food-category" name="food-category">
                             <?php
                             require_once "../../Database/MenuConnection.php";
                             $con = MenuConnection::getInstance();
@@ -211,10 +199,10 @@ $currentPage = "Menu";
             </div>
             <div class="-mx-3 md:flex mb-2">
                 <div class="md:w-1/2 px-3 mb-6 md:mb-0">
-                    <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="food-price">
+                    <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="foodPrice">
                         Price
                     </label>
-                    <input class="appearance-none block w-full bg-gray-100 text-gray-500 border border-grey-lighter rounded py-3 px-4" id="food-price" name="food-price" type="number" placeholder="15.99">
+                    <input class="appearance-none block w-full bg-gray-100 text-gray-500 border border-grey-lighter rounded py-3 px-4" id="foodPrice" name="foodPrice" type="text" placeholder="15.99">
                 </div>
                 <div class="md:w-1/2 px-3">
                     <div class="group cursor-pointer relative inline-block border-gray-400 w-28">
@@ -248,6 +236,9 @@ $currentPage = "Menu";
                 </div>
             </div>
             <input type="submit" value="Submit" id="submit" name="submit" class="rounded text-sm font-semibold px-3 py-1 mt-4 pb-3 pt-3 bg-gray-700 hover:bg-gray-600 text-white focus:shadow-outline focus:outline-none">
+            <footer id="footerItemContent" class="flex justify-start px-8 pb-4 pt-4 pl-4 mt-4 bg-green-600 hidden">
+                <span id="itemContent" class="text-sm text-gray-100 hidden"></span>
+            </footer>
         </div>
     </form>
 
@@ -261,10 +252,26 @@ $currentPage = "Menu";
                 data: formData,
                 async: false,
                 success: function(data) {
-                    alert(data)
+                    var code = parseInt(data);
+                    if (code != 0) {
+                        document.getElementById("imageUploadError").innerHTML = getUploadStatus(code);
+                        document.getElementById("footerUploadError").classList.remove("hidden");
+                        document.getElementById("imageUploadError").classList.remove("hidden");
+                        setTimeout("hideUploadError()", 5500);
+                    } else if (code == 0) {
+                        document.getElementById("itemContent").innerHTML = "Item successfully uploaded. Redirecting to Menu...";
+                        document.getElementById("footerItemContent").classList.remove("hidden");
+                        document.getElementById("itemContent").classList.remove("hidden");
+                        $("#new-menu-item input").prop("disabled", true);
+                        $("#new-menu-item select").prop("disabled", true);
+                        setTimeout("redirectAfterSuccess()", 3000);
+                    }
                 },
                 error: function(data) {
-                    alert(data);
+                    if (parseInt(data) != 0) {
+                        document.getElementById("imageUploadError").innerHTML = 'error!';
+                        document.getElementById("imageUploadError").classList.remove("hidden");
+                    }
                 },
                 cache: false,
                 contentType: false,
@@ -273,6 +280,39 @@ $currentPage = "Menu";
 
             return false;
         });
+
+        function hideUploadError() {
+            document.getElementById("footerUploadError").classList.add("hidden");
+        }
+
+        function redirectAfterSuccess() {
+            window.location.replace("../index.php");
+        }
+
+        function getUploadStatus(code) {
+            switch (code) {
+                case 0:
+                    return "success";
+                    break;
+                case 1:
+                    return "File exists. Please choose a different name.";
+                    break;
+                case 2:
+                    return "File too large. Please select smaller image size.";
+                    break;
+                case 3:
+                    return "Please select an image file.";
+                    break;
+                case 4:
+                    return "Server error. Image could not be saved."
+                    break;
+                case 5:
+                    return "Unknown error. Please contact the admin.";
+                    break;
+                default:
+                    return code;
+            }
+        }
     </script>
 
     <script>
