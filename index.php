@@ -276,277 +276,74 @@
                     <div class="col-md-12">
                         <div class="flat-tabs">
                             <ul class="menu-tab">
-                                <li class="active"><a href="#">Starters</a></li>
-                                <li><a href="#">Dishes </a></li>
-                                <li><a href="#">Deserts </a></li>
-                                <li><a href="#">Fastfood </a></li>
-                                <li><a href="#">Coffer </a></li>
-                                <li><a href="#">Drinks </a></li>
+                                <?php
+                                require_once "admin/Database/MenuConnection.php";
+                                $con = MenuConnection::getInstance();
+                                $categories = $con->getMenuCategories(true);
+                                $catCounter = 0;
+
+                                foreach ($categories as $category) {
+                                    $catName = $category["name"];
+                                    if ($catCounter == 0) {
+                                        $catCounter++;
+                                        echo "<li class='active'><a href='#'>$catName</a></li>";
+                                    } else {
+                                        echo "<li><a href='#'>$catName </a></li>";
+                                    }
+                                }
+                                ?>
                             </ul>
 
                             <div class="content-tab">
-                                <div class="content-inner">
-                                    <div class="col-md-6">
-                                        <ul class="menu-fd">
-                                            <li>
-                                                <div class="media-wrap flat-hover-moveright">
-                                                    <a href="#" class="pull-left">
-                                                        <img src="images/menufood/1.png" alt="client" class="img-responsive">
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h6><a href="#">ITALIAN SOURCE MUSHROOM</a></h6>
-                                                        <div class="dotted-bg"></div>
-                                                        <span>$19.9</span>
-                                                    </div>
-                                                    <ul class="menu-in">
-                                                        <li>Mushroom</li>
-                                                        <li>Garlic </li>
-                                                        <li>Veggies</li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="media-wrap flat-hover-moveright">
-                                                    <a href="#" class="pull-left">
-                                                        <img src="images/menufood/2.png" alt="client" class="img-responsive">
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h6><a href="#">TUNA ROAST SOURCE</a></h6>
-                                                        <div class="dotted-bg"></div>
-                                                        <span>$19.9</span>
-                                                    </div>
+                                <?php
+                                foreach ($categories as $category) {
+                                    echo "<div class='content-inner'>";
+                                    $menuItems = $con->getMenuItems();
+                                    foreach ($menuItems as $menuItem) {
+                                        $status = $menuItem["status"];
+                                        $foodCatagory = $menuItem["category"];
 
-                                                    <ul class="menu-in">
-                                                        <li>Tuna</li>
-                                                        <li>Potatoes </li>
-                                                        <li>Rice</li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="media-wrap flat-hover-moveright">
-                                                    <a href="#" class="pull-left">
-                                                        <img src="images/menufood/3.png" alt="client" class="img-responsive">
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h6><a href="#">FRIED POTATOES WITH GARLIC</a></h6>
-                                                        <div class="dotted-bg"></div>
-                                                        <span>$19.9</span>
-                                                    </div>
+                                        if ($status == "Active" && $foodCatagory == $category["name"]) {
+                                            $name = $menuItem["name"];
+                                            $image = $menuItem["image"];
+                                            $price = $menuItem["price"];
+                                            $disc = $menuItem["discount"];
+                                            $desc = $menuItem["description"];
 
-                                                    <ul class="menu-in">
-                                                        <li>Potatoes</li>
-                                                        <li>Olive Oil </li>
-                                                        <li>Garlic</li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="media-wrap flat-hover-moveright">
-                                                    <a href="#" class="pull-left">
-                                                        <img src="images/menufood/4.png" alt="client" class="img-responsive">
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h6><a href="#">ROAST PORK (4 STICKS)</a></h6>
-                                                        <div class="dotted-bg"></div>
-                                                        <span>$19.9</span>
-                                                    </div>
+                                            if ($disc != 0) {
+                                                $price = $price - $price * $disc;
+                                            }
 
-                                                    <ul class="menu-in">
-                                                        <li>Pork </li>
-                                                        <li>Veggies </li>
-                                                        <li>Shoyu</li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="media-wrap flat-hover-moveright">
-                                                    <a href="#" class="pull-left">
-                                                        <img src="images/menufood/5.png" alt="client" class="img-responsive">
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h6><a href="#">SALTED FRIED CHICKEN</a></h6>
+                                            $price = number_format($price, 2);
 
-                                                        <span>$19.9</span>
-                                                    </div>
+                                            $foodDesc = explode(",", $desc);
 
-                                                    <ul class="menu-in">
-                                                        <li>Chicken</li>
-                                                        <li>Olive Oil </li>
-                                                        <li>Salt</li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div><!-- /.col-md-6" -->
-
-
-                                    <div class="col-md-6">
-                                        <ul class="menu-fd">
-                                            <li>
-                                                <div class="media-wrap flat-hover-moveright">
-                                                    <a href="#" class="pull-left">
-                                                        <img src="images/menufood/6.png" alt="client" class="img-responsive">
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h6><a href="#">CRAB WITH CURRY SOURCES</a></h6>
-                                                        <div class="dotted-bg"></div>
-                                                        <span>$19.9</span>
-                                                    </div>
-                                                    <ul class="menu-in">
-                                                        <li>Crab </li>
-                                                        <li>Potatoes </li>
-                                                        <li>Veggies</li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="media-wrap flat-hover-moveright">
-                                                    <a href="#" class="pull-left">
-                                                        <img src="images/menufood/7.png" alt="client" class="img-responsive">
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h6><a href="#">IMPORTED SALMON STEAK</a></h6>
-                                                        <div class="dotted-bg"></div>
-                                                        <span>$19.9</span>
-                                                    </div>
-
-                                                    <ul class="menu-in">
-                                                        <li>Salmon </li>
-                                                        <li>Veggies </li>
-                                                        <li>Oil</li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="media-wrap flat-hover-moveright">
-                                                    <a href="#" class="pull-left">
-                                                        <img src="images/menufood/8.png" alt="client" class="img-responsive">
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h6><a href="#">BAKED POTATO PIZZA</a></h6>
-                                                        <div class="dotted-bg"></div>
-                                                        <span>$19.9</span>
-                                                    </div>
-
-                                                    <ul class="menu-in">
-                                                        <li>Potato </li>
-                                                        <li>Bread </li>
-                                                        <li>Cheese</li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="media-wrap flat-hover-moveright">
-                                                    <a href="#" class="pull-left">
-                                                        <img src="images/menufood/9.png" alt="client" class="img-responsive">
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h6><a href="#">PORK WITH ITALIAN SALSA VERDE</a></h6>
-                                                        <div class="dotted-bg"></div>
-                                                        <span>$19.9</span>
-                                                    </div>
-
-                                                    <ul class="menu-in">
-                                                        <li>Pork </li>
-                                                        <li>Tomatoes</li>
-                                                        <li>Veggies</li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="media-wrap flat-hover-moveright">
-                                                    <a href="#" class="pull-left">
-                                                        <img src="images/menufood/10.png" alt="client" class="img-responsive">
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h6><a href="#">FRESH CRAB WITH LEMON</a></h6>
-
-                                                        <span>$19.9</span>
-                                                    </div>
-
-                                                    <ul class="menu-in">
-                                                        <li>Crab</li>
-                                                        <li>Lemon </li>
-                                                        <li>Garlic</li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div><!-- /.col-md-6" -->
-                                </div><!-- /.content-inner -->
-
-
-                                <div class="content-inner">
-                                    <div class="col-md-6">
-                                        <ul class="menu-fd">
-                                            <li>
-                                                <div class="media-wrap flat-hover-moveright">
-                                                    <a href="#" class="pull-left">
-                                                        <img src="images/menufood/1.png" alt="client" class="img-responsive">
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h6><a href="#">ITALIAN SOURCE MUSHROOM</a></h6>
-                                                        <div class="dotted-bg"></div>
-                                                        <span>$19.9</span>
-                                                    </div>
-                                                    <ul class="menu-in">
-                                                        <li>Mushroom</li>
-                                                        <li>Garlic </li>
-                                                        <li>Veggies</li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div><!-- /.content-inner -->
-                                <div class="content-inner">
-                                    <div class="col-md-6">
-                                        <ul class="menu-fd">
-                                            <li>
-                                                <div class="media-wrap flat-hover-moveright">
-                                                    <a href="#" class="pull-left">
-                                                        <img src="images/menufood/1.png" alt="client" class="img-responsive">
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h6><a href="#">ITALIAN SOURCE MUSHROOM2</a></h6>
-                                                        <div class="dotted-bg"></div>
-                                                        <span>$19.9</span>
-                                                    </div>
-                                                    <ul class="menu-in">
-                                                        <li>Mushroom</li>
-                                                        <li>Garlic </li>
-                                                        <li>Veggies</li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div><!-- /.content-inner -->
-
-                                <div class="content-inner">
-                                    <div class="col-md-6">
-                                        <ul class="menu-fd">
-                                            <li>
-                                                <div class="media-wrap flat-hover-moveright">
-                                                    <a href="#" class="pull-left">
-                                                        <img src="images/menufood/1.png" alt="client" class="img-responsive">
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h6><a href="#">ITALIAN SOURCE MUSHROOM3</a></h6>
-                                                        <div class="dotted-bg"></div>
-                                                        <span>$19.9</span>
-                                                    </div>
-                                                    <ul class="menu-in">
-                                                        <li>Mushroom</li>
-                                                        <li>Garlic </li>
-                                                        <li>Veggies</li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div><!-- /.content-inner -->
+                                            echo "<div class='col-md-6'>";
+                                            echo "<ul class='menu-fd'>";
+                                            echo "<li>";
+                                            echo "<div class='media-wrap flat-hover-moveright'>";
+                                            echo "<a href='#' class='pull-left'>";
+                                            echo "<img src='images/menu-item/$image' width='100' height='100' alt='client' class='img-responsive'>";
+                                            echo "</a>";
+                                            echo "<div class='media-body'>";
+                                            echo "<h6><a href='#'>$name</a></h6>";
+                                            echo "<div class='dotted-bg'></div>";
+                                            echo "<span>RM$price</span>";
+                                            echo "</div>";
+                                            echo "<ul class='menu-in'>";
+                                            foreach ($foodDesc as $desc) {
+                                                echo "<li style='margin-right:22px'>$desc </li>";
+                                            }
+                                            echo "</ul>";
+                                            echo "</div>";
+                                            echo "</li>";
+                                            echo "</ul>";
+                                            echo "</div>";
+                                        }
+                                    }
+                                    echo "</div>";
+                                }
+                                ?>
                             </div><!-- /.content-tab -->
                         </div>
                         <!--flat-tabs-->

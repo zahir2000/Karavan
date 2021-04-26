@@ -56,9 +56,13 @@ class MenuConnection
         return $menuItems;
     }
 
-    public function getMenuCategories()
+    public function getMenuCategories($shouldOrder = false)
     {
         $query = "SELECT * FROM category";
+
+        if ($shouldOrder) {
+            $query = "SELECT * FROM category ORDER BY categoryOrder";
+        }
 
         $stmt = $this->db->getDb()->prepare($query);
         $stmt->execute();
@@ -114,6 +118,13 @@ class MenuConnection
         $stmt->bindParam(6, $status, PDO::PARAM_STR);
         $stmt->bindParam(7, $category, PDO::PARAM_STR);
         $stmt->bindParam(8, $id);
+        $stmt->execute();
+    }
+
+    public function deleteMenuItem($id) {
+        $query = "DELETE FROM menuitem WHERE MenuItemID = ?";
+        $stmt = $this->db->getDb()->prepare($query);
+        $stmt->bindParam(1, $id, PDO::PARAM_STR);
         $stmt->execute();
     }
 }

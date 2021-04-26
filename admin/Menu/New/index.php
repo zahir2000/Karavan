@@ -285,7 +285,7 @@ if (isset($_GET["edit"]) && $_GET["edit"] == "true") {
             var formData = new FormData(this);
             var uploadLink = 'upload.php';
 
-            if (foodId) {
+            if (typeof foodId !== 'object') {
                 uploadLink = 'upload.php?id=' + foodId;
             }
 
