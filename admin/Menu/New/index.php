@@ -1,7 +1,30 @@
 <?php
 session_start();
-require_once("../../LoginChecker.php");
+require_once "../../LoginChecker.php";
+require_once "../../Database/MenuConnection.php";
 $currentPage = "Menu";
+
+$foodName = "";
+$foodStatus = "Active";
+$foodDesc = "";
+$foodPrice = NULL;
+$foodDisc = 0;
+$foodCat = "Main";
+
+if (isset($_GET["edit"]) && $_GET["edit"] == "true") {
+    $foodId = filter_input(INPUT_GET, "id");
+    $con = MenuConnection::getInstance();
+    $food = $con->getMenuItem($foodId);
+
+    foreach ($food as $item) {
+        $foodName = $item["name"];
+        $foodStatus = $item["status"];
+        $foodDesc = $item["description"];
+        $foodPrice = $item["price"];
+        $foodDisc = $item["discount"] * 100;
+        $foodCat = $item["category"];
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -158,10 +181,10 @@ $currentPage = "Menu";
         <div class="bg-white container mx-auto max-w-screen-lg h-full shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
             <div class="-mx-3 md:flex mb-3">
                 <div class="md:w-1/2 px-3 mb-6 md:mb-0">
-                    <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="foodName">
+                    <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="food-name">
                         Name
                     </label>
-                    <input class="appearance-none block w-full bg-gray-100 text-gray-500 border border-red rounded py-3 px-4 mb-3" name="foodName" id="foodName" type="text" placeholder="Somsa" required>
+                    <input class="appearance-none block w-full bg-gray-100 text-gray-500 border border-red rounded py-3 px-4 mb-3" name="food-name" id="food-name" type="text" placeholder="Somsa" required value="<?php echo $foodName; ?>">
                 </div>
                 <div class="md:w-1/2 px-3">
                     <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="food-category">
@@ -176,7 +199,11 @@ $currentPage = "Menu";
                             foreach ($categories as $category) {
                                 if ($category["status"] == "Active") {
                                     $name = $category["name"];
-                                    echo "<option value='$name'>$name</option>";
+                                    if ($foodCat == $name) {
+                                        echo "<option selected value='$name'>$name</option>";
+                                    } else {
+                                        echo "<option value='$name'>$name</option>";
+                                    }
                                 }
                             }
                             ?>
@@ -194,15 +221,15 @@ $currentPage = "Menu";
                     <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="food-description">
                         Description
                     </label>
-                    <input class="appearance-none block w-full bg-gray-100 text-gray-500 border border-grey-lighter rounded py-3 px-4" id="food-description" name="food-description" type="text" placeholder="Potatoes, Chicken">
+                    <input class="appearance-none block w-full bg-gray-100 text-gray-500 border border-grey-lighter rounded py-3 px-4" id="food-description" name="food-description" type="text" placeholder="Potatoes, Chicken" required value="<?php echo $foodDesc; ?>">
                 </div>
             </div>
             <div class="-mx-3 md:flex mb-2">
                 <div class="md:w-1/2 px-3 mb-6 md:mb-0">
-                    <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="foodPrice">
+                    <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="food-price">
                         Price
                     </label>
-                    <input class="appearance-none block w-full bg-gray-100 text-gray-500 border border-grey-lighter rounded py-3 px-4" id="foodPrice" name="foodPrice" type="text" placeholder="15.99">
+                    <input class="appearance-none block w-full bg-gray-100 text-gray-500 border border-grey-lighter rounded py-3 px-4" id="food-price" name="food-price" type="text" placeholder="15.99" required value="<?php echo $foodPrice; ?>">
                 </div>
                 <div class="md:w-1/2 px-3">
                     <div class="group cursor-pointer relative inline-block border-gray-400 w-28">
@@ -216,7 +243,7 @@ $currentPage = "Menu";
                             </svg>
                         </div>
                     </div>
-                    <input type="number" max="100" min="0" step="1" class="appearance-none block w-full bg-gray-100 text-gray-500 border border-grey-lighter rounded py-3 px-4" id="food-discount" name="food-discount" value="0" placeholder="10">
+                    <input type="number" max="100" min="0" step="1" class="appearance-none block w-full bg-gray-100 text-gray-500 border border-grey-lighter rounded py-3 px-4" id="food-discount" name="food-discount" placeholder="10" value="<?php echo $foodDisc; ?>">
                 </div>
                 <div class="md:w-1/2 px-3">
                     <label class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2" for="food-status">
@@ -224,8 +251,15 @@ $currentPage = "Menu";
                     </label>
                     <div class="relative">
                         <select class="block appearance-none w-full bg-gray-100 border border-grey-lighter text-gray-500 py-3 px-4 pr-8 rounded" id="food-status" name="food-status" required>
-                            <option>Active</option>
-                            <option>Inactive</option>
+                            <?php
+                            if ($foodStatus == "Active") {
+                                echo "<option selected value='Active'>Active</option>";
+                                echo "<option value='Inactive'>Inactive</option>";
+                            } else {
+                                echo "<option value='Active'>Active</option>";
+                                echo "<option selected value='Inactive'>Inactive</option>";
+                            }
+                            ?>
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
                             <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -243,11 +277,20 @@ $currentPage = "Menu";
     </form>
 
     <script>
+        var foodId = <?php if (isset($_GET["id"])) {
+                            echo filter_input(INPUT_GET, "id");
+                        } ?>
+
         $("form#new-menu-item").submit(function() {
             var formData = new FormData(this);
+            var uploadLink = 'upload.php';
+
+            if (foodId) {
+                uploadLink = 'upload.php?id=' + foodId;
+            }
 
             $.ajax({
-                url: 'upload.php',
+                url: uploadLink,
                 type: 'POST',
                 data: formData,
                 async: false,

@@ -66,28 +66,4 @@ class DatabaseConnection
             return false;
         }
     }
-
-    public function addJournalPublication($title, $journalTitle, $volumeIssue, $year, $pages, $authors, $impactFactor, $citationDb, $result)
-    {
-        $id = null;
-        $query = "INSERT INTO journal VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(1, $id);
-        $stmt->bindParam(2, $title, PDO::PARAM_STR);
-        $stmt->bindParam(3, $journalTitle, PDO::PARAM_STR);
-        $stmt->bindParam(4, $volumeIssue, PDO::PARAM_STR);
-        $stmt->bindParam(5, $year, PDO::PARAM_INT);
-        $stmt->bindParam(6, $pages, PDO::PARAM_STR);
-        $stmt->bindParam(7, $authors, PDO::PARAM_STR);
-        $stmt->bindParam(8, $impactFactor);
-        $stmt->bindParam(9, $citationDb, PDO::PARAM_STR);
-        $stmt->bindParam(10, $result, PDO::PARAM_STR);
-        $stmt->execute();
-
-        if ($stmt->rowCount() != 0) {
-            return true;
-        }
-
-        return false;
-    }
 }

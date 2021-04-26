@@ -24,6 +24,22 @@ class MenuConnection
         return self::$instance;
     }
 
+    public function getMenuItem($id)
+    {
+        $query = "SELECT * FROM menuitem WHERE MenuItemID = ?";
+        $stmt = $this->db->getDb()->prepare($query);
+        $stmt->bindParam(1, $id);
+        $stmt->execute();
+
+        if ($stmt->rowCount() != 0) {
+            $menuItem = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            $menuItem = NULL;
+        }
+
+        return $menuItem;
+    }
+
     public function getMenuItems()
     {
         $query = "SELECT * FROM menuitem";
@@ -83,5 +99,21 @@ class MenuConnection
         $menuId = $this->db->getLastInsertId();
 
         return $menuId;
+    }
+
+    public function updateMenuItem($id, $name, $image, $price, $discount, $description, $status, $category)
+    {
+        $query = "UPDATE menuitem SET name = ?, image = ?, price = ?, discount = ?, description = ?, status = ?, category = ? WHERE MenuItemID = ?";
+        $stmt = $this->db->getDb()->prepare($query);
+
+        $stmt->bindParam(1, $name, PDO::PARAM_STR);
+        $stmt->bindParam(2, $image, PDO::PARAM_STR);
+        $stmt->bindParam(3, $price);
+        $stmt->bindParam(4, $discount);
+        $stmt->bindParam(5, $description, PDO::PARAM_STR);
+        $stmt->bindParam(6, $status, PDO::PARAM_STR);
+        $stmt->bindParam(7, $category, PDO::PARAM_STR);
+        $stmt->bindParam(8, $id);
+        $stmt->execute();
     }
 }

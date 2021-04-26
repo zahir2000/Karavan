@@ -250,7 +250,7 @@ $menuItems = $con->getMenuItems();
                                         </td>
                                         <td class="border-b border-gray-200 bg-white text-sm">
                                             <div class="flex justify-center">
-                                                <a href="" class="bg-gray-300 mr-1 hover:bg-gray-400 text-gray-800 text-sm font-semibold py-2 px-4 rounded">
+                                                <a href="New/index.php?edit=true&id=<?php echo $id; ?>" class="bg-gray-300 mr-1 hover:bg-gray-400 text-gray-800 text-sm font-semibold py-2 px-4 rounded">
                                                     <span>Edit</span>
                                                 </a>
                                                 <a href="" class="bg-red-300 hover:bg-gray-400 text-gray-800 text-sm font-semibold py-2 px-4 rounded">
