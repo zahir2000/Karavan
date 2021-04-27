@@ -284,11 +284,15 @@
 
                                 foreach ($categories as $category) {
                                     $catName = $category["name"];
-                                    if ($catCounter == 0) {
-                                        $catCounter++;
-                                        echo "<li class='active'><a href='#'>$catName</a></li>";
-                                    } else {
-                                        echo "<li><a href='#'>$catName </a></li>";
+                                    $catStatus = $category["status"];
+
+                                    if ($catStatus == "Active") {
+                                        if ($catCounter == 0) {
+                                            $catCounter++;
+                                            echo "<li class='active'><a href='#'>$catName</a></li>";
+                                        } else {
+                                            echo "<li><a href='#'>$catName </a></li>";
+                                        }
                                     }
                                 }
                                 ?>
@@ -297,51 +301,52 @@
                             <div class="content-tab">
                                 <?php
                                 foreach ($categories as $category) {
-                                    echo "<div class='content-inner'>";
-                                    $menuItems = $con->getMenuItems();
-                                    foreach ($menuItems as $menuItem) {
-                                        $status = $menuItem["status"];
-                                        $foodCatagory = $menuItem["category"];
+                                    if ($category["status"] == "Active") {
+                                        echo "<div class='content-inner'>";
+                                        $menuItems = $con->getMenuItems();
+                                        foreach ($menuItems as $menuItem) {
+                                            $status = $menuItem["status"];
+                                            $foodCatagory = $menuItem["category"];
 
-                                        if ($status == "Active" && $foodCatagory == $category["name"]) {
-                                            $name = $menuItem["name"];
-                                            $image = $menuItem["image"];
-                                            $price = $menuItem["price"];
-                                            $disc = $menuItem["discount"];
-                                            $desc = $menuItem["description"];
+                                            if ($status == "Active" && $foodCatagory == $category["name"]) {
+                                                $name = $menuItem["name"];
+                                                $image = $menuItem["image"];
+                                                $price = $menuItem["price"];
+                                                $disc = $menuItem["discount"];
+                                                $desc = $menuItem["description"];
 
-                                            if ($disc != 0) {
-                                                $price = $price - $price * $disc;
+                                                if ($disc != 0) {
+                                                    $price = $price - $price * $disc;
+                                                }
+
+                                                $price = number_format($price, 2);
+                                                $foodDesc = explode(",", $desc);
+
+                                                echo "<div class='col-md-6'>";
+                                                echo "<ul class='menu-fd'>";
+                                                echo "<li>";
+                                                echo "<div class='media-wrap flat-hover-moveright'>";
+                                                echo "<a href='#' class='pull-left'>";
+                                                echo "<img src='images/menu-item/$image' width='100' height='100' alt='client' class='img-responsive'>";
+                                                echo "</a>";
+                                                echo "<div class='media-body'>";
+                                                echo "<h6><a href='#'>$name</a></h6>";
+                                                echo "<div class='dotted-bg'></div>";
+                                                echo "<span>RM$price</span>";
+                                                echo "</div>";
+                                                echo "<ul class='menu-in'>";
+                                                foreach ($foodDesc as $desc) {
+                                                    echo "<li style='margin-right:22px'>$desc </li>";
+                                                }
+                                                echo "</ul>";
+                                                echo "</div>";
+                                                echo "</li>";
+                                                echo "</ul>";
+                                                echo "</div>";
                                             }
-
-                                            $price = number_format($price, 2);
-
-                                            $foodDesc = explode(",", $desc);
-
-                                            echo "<div class='col-md-6'>";
-                                            echo "<ul class='menu-fd'>";
-                                            echo "<li>";
-                                            echo "<div class='media-wrap flat-hover-moveright'>";
-                                            echo "<a href='#' class='pull-left'>";
-                                            echo "<img src='images/menu-item/$image' width='100' height='100' alt='client' class='img-responsive'>";
-                                            echo "</a>";
-                                            echo "<div class='media-body'>";
-                                            echo "<h6><a href='#'>$name</a></h6>";
-                                            echo "<div class='dotted-bg'></div>";
-                                            echo "<span>RM$price</span>";
-                                            echo "</div>";
-                                            echo "<ul class='menu-in'>";
-                                            foreach ($foodDesc as $desc) {
-                                                echo "<li style='margin-right:22px'>$desc </li>";
-                                            }
-                                            echo "</ul>";
-                                            echo "</div>";
-                                            echo "</li>";
-                                            echo "</ul>";
-                                            echo "</div>";
                                         }
+                                        echo "</div>";
                                     }
-                                    echo "</div>";
                                 }
                                 ?>
                             </div><!-- /.content-tab -->

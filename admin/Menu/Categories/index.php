@@ -1,21 +1,21 @@
 <?php
 session_start();
-require_once "../LoginChecker.php";
-require_once "../Database/MenuConnection.php";
-$currentPage = "Menu";
+require_once "../../LoginChecker.php";
+require_once "../../Database/MenuConnection.php";
+$currentPage = "More";
 
 $con = MenuConnection::getInstance();
-$menuItems = $con->getMenuItems();
+$menuCategories = $con->getMenuCategories(true);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Karavan - Menu</title>
+    <title>Karavan - Menu Categories</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="../customtail.css">
+    <link rel="stylesheet" href="../../tailwind.css">
     <link rel="stylesheet" href="publications.css">
     <script src="../../js/jquery.min.js"></script>
     <script src="../../js/jquery-migrate-3.0.1.min.js"></script>
@@ -27,7 +27,7 @@ $menuItems = $con->getMenuItems();
 </head>
 
 <body>
-    <?php include_once '../Header.php'; ?>
+    <?php include_once '../../Header.php'; ?>
     <dialog id="new" class="h-auto w-11/12 md:w-1/2 p-5  bg-white rounded-md ">
         <div class="flex flex-col w-full h-auto ">
             <!-- Header -->
@@ -66,7 +66,7 @@ $menuItems = $con->getMenuItems();
         <div class="container mx-auto px-4 sm:px-8">
             <div class="py-8">
                 <div>
-                    <h2 class="text-2xl font-semibold leading-tight">Menu Items</h2>
+                    <h2 class="text-2xl font-semibold leading-tight">Menu Categories</h2>
                 </div>
                 <div class="my-2 flex sm:flex-row flex-col justify-between">
                     <div class="flex flex-row mb-1 sm:mb-0">
@@ -119,25 +119,13 @@ $menuItems = $con->getMenuItems();
                         <table class="min-w-full leading-normal">
                             <thead>
                                 <tr>
-                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-
-                                    </th>
                                     <th class="font-bold px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         Name
                                     </th>
-                                    <th class="font-bold px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Category
+                                    <th class="font-bold text-center px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        Order
                                     </th>
-                                    <th class="font-bold px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Price
-                                    </th>
-                                    <th class="font-bold px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Discount
-                                    </th>
-                                    <th class="font-bold px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Description
-                                    </th>
-                                    <th class="font-bold px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <th class="font-bold text-center px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         Status
                                     </th>
                                     <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -146,96 +134,21 @@ $menuItems = $con->getMenuItems();
                                 </tr>
                             </thead>
                             <tbody>
-                                <!--<tr>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <div class="flex items-center">
-                                            <img src="/karavan/images/menu-item/somsa.jpg" alt="" width="100" class="m-auto">
-                                        </div>
-                                    </td>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">Somsa</p>
-                                    </td>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">Main</p>
-                                    </td>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">
-                                            RM34.90
-                                        </p>
-                                    </td>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">
-                                            0.00
-                                        </p>
-                                    </td>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">
-                                            Meat, Potatoes
-                                        </p>
-                                    </td>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                            <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                            <span class="relative">Active</span>
-                                        </span>
-                                    </td>
-                                    <td class="border-b border-gray-200 bg-white text-sm">
-                                        <div class="flex justify-center">
-                                            <button class="bg-gray-300 mr-1 hover:bg-gray-400 text-gray-800 text-sm font-semibold py-2 px-4 rounded inline-flex items-center">
-                                                <span>Edit</span>
-                                            </button>
-                                            <button class="bg-red-300 hover:bg-gray-400 text-gray-800 text-sm font-semibold py-2 px-4 rounded inline-flex items-center">
-                                                <span>Delete</span>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>-->
                                 <?php
-                                foreach ($menuItems as $item) {
-                                    $id = $item["MenuItemID"];
+                                foreach ($menuCategories as $item) {
+                                    $id = $item["CategoryID"];
                                     $name = $item["name"];
-                                    $price = $item["price"];
-                                    $description = $item["description"];
+                                    $categoryOrder = $item["categoryOrder"];
                                     $status = $item["status"];
-                                    $image = $item["image"];
-                                    $discount = $item["discount"];
-                                    $category = $item["category"];
                                 ?>
                                     <tr>
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <div class="flex items-center">
-                                                <img src="/karavan/images/menu-item/<?php echo $image; ?>" alt="" width="100" class="m-auto">
-                                            </div>
-                                        </td>
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <p class="text-gray-900 whitespace-no-wrap"><?php echo $name; ?></p>
                                         </td>
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <p class="text-gray-900 whitespace-no-wrap"><?php echo $category; ?></p>
+                                        <td class="text-center px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                            <p class="text-gray-900 whitespace-no-wrap"><?php echo $categoryOrder; ?></p>
                                         </td>
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            RM<?php if ($discount == 0.00) {
-                                                    echo "<p class='text-gray-900 whitespace-no-wrap'>";
-                                                    echo number_format($price, 2);
-                                                } else {
-                                                    echo "<p class='line-through text-gray-900 whitespace-no-wrap'>RM";
-                                                    echo number_format($price, 2);
-                                                    echo "</p><p class='text-gray-900 whitespace-no-wrap'>RM";
-                                                    echo number_format($price - $price * $discount, 2);
-                                                } ?>
-                                            </p>
-                                        </td>
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <p class="text-gray-900 whitespace-no-wrap">
-                                                <?php echo $discount; ?>
-                                            </p>
-                                        </td>
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <p class="text-gray-900 whitespace-no-wrap">
-                                                <?php echo $description; ?>
-                                            </p>
-                                        </td>
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                        <td class="text-center px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <span class="relative inline-block px-3 py-1 font-semibold leading-tight">
                                                 <?php
                                                 if ($status == "Active") {
@@ -249,7 +162,7 @@ $menuItems = $con->getMenuItems();
                                             </span>
                                         </td>
                                         <td class="border-b border-gray-200 bg-white text-sm">
-                                            <div class="flex justify-center">
+                                            <div class="flex justify-end mr-5">
                                                 <a href="New/index.php?edit=true&id=<?php echo $id; ?>" class="bg-gray-300 mr-1 hover:bg-gray-400 text-gray-800 text-sm font-semibold py-2 px-4 rounded">
                                                     <span>Edit</span>
                                                 </a>
@@ -296,7 +209,7 @@ $menuItems = $con->getMenuItems();
                         </table>
                         <div class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
                             <span class="text-xs xs:text-sm text-gray-900">
-                                Showing 1 to <?php echo count($menuItems); ?> of 50 Entries
+                                Showing 1 to <?php echo count($menuCategories); ?> of 50 Entries
                             </span>
                             <div class="inline-flex mt-2 xs:mt-0">
                                 <button class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l">

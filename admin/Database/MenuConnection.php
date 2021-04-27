@@ -40,6 +40,22 @@ class MenuConnection
         return $menuItem;
     }
 
+    public function getCategoryItem($id)
+    {
+        $query = "SELECT * FROM category WHERE CategoryID = ?";
+        $stmt = $this->db->getDb()->prepare($query);
+        $stmt->bindParam(1, $id);
+        $stmt->execute();
+
+        if ($stmt->rowCount() != 0) {
+            $catItem = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            $catItem = NULL;
+        }
+
+        return $catItem;
+    }
+
     public function getMenuItems()
     {
         $query = "SELECT * FROM menuitem";
@@ -121,8 +137,46 @@ class MenuConnection
         $stmt->execute();
     }
 
-    public function deleteMenuItem($id) {
+    public function deleteMenuItem($id)
+    {
         $query = "DELETE FROM menuitem WHERE MenuItemID = ?";
+        $stmt = $this->db->getDb()->prepare($query);
+        $stmt->bindParam(1, $id, PDO::PARAM_STR);
+        $stmt->execute();
+    }
+
+    public function addMenuCategory($name, $status, $catOrder)
+    {
+        $query = "INSERT INTO category VALUES(?, ?, ?, ?)";
+        $stmt = $this->db->getDb()->prepare($query);
+
+        $id = null;
+        $stmt->bindParam(1, $id);
+        $stmt->bindParam(2, $name, PDO::PARAM_STR);
+        $stmt->bindParam(3, $status, PDO::PARAM_STR);
+        $stmt->bindParam(4, $catOrder, PDO::PARAM_INT);
+
+        $stmt->execute();
+        $catId = $this->db->getLastInsertId();
+
+        return $catId;
+    }
+
+    public function updateMenuCategory($id, $name, $status, $catOrder)
+    {
+        $query = "UPDATE category SET name = ?, status = ?, categoryOrder = ? WHERE CategoryID = ?";
+        $stmt = $this->db->getDb()->prepare($query);
+
+        $stmt->bindParam(1, $name, PDO::PARAM_STR);
+        $stmt->bindParam(2, $status, PDO::PARAM_STR);
+        $stmt->bindParam(3, $catOrder, PDO::PARAM_INT);
+        $stmt->bindParam(4, $id);
+        $stmt->execute();
+    }
+
+    public function deleteCategoryItem($id)
+    {
+        $query = "DELETE FROM category WHERE CategoryID = ?";
         $stmt = $this->db->getDb()->prepare($query);
         $stmt->bindParam(1, $id, PDO::PARAM_STR);
         $stmt->execute();
