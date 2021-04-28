@@ -183,74 +183,49 @@
 
                 <div class="row">
                     <div class="flat-divider d10px"></div>
-                    <div class="item">
-                        <div class="imagebox effect1">
-                            <div class="box-wrap">
-                                <div class="box-image">
-                                    <a href="#"><img src="images/imagebox/2.jpg" alt="images"></a>
-                                </div>
-                                <div class="box-content">
-                                    <h5>ITALIAN SOURCE MUSHROOM</h5>
-                                    <ul>
-                                        <li>RM19.90</li>
-                                        <li>
-                                            <i class="fa fa-heart"></i>
-                                            <i class="fa fa-heart"></i>
-                                            <i class="fa fa-heart"></i>
-                                            <i class="fa fa-heart"></i>
-                                            <i class="fa fa-heart"></i>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="item">
-                        <div class="imagebox effect1">
-                            <div class="box-wrap">
-                                <div class="box-image">
-                                    <a href="#"><img src="images/imagebox/3.jpg" alt="images"></a>
-                                </div>
-                                <div class="box-content">
-                                    <h5>CRAB WITH CURRY SOURCES</h5>
-                                    <ul>
-                                        <li>$19.9</li>
-                                        <li>
-                                            <i class="fa fa-heart"></i>
-                                            <i class="fa fa-heart"></i>
-                                            <i class="fa fa-heart"></i>
-                                            <i class="fa fa-heart"></i>
-                                            <i class="fa fa-heart"></i>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <?php
+                    require_once "admin/Database/MenuConnection.php";
+                    $con = MenuConnection::getInstance();
+                    $hotMenuItems = $con->getHotMenuItems();
 
-                    <div class="item">
-                        <div class="imagebox effect1">
-                            <div class="box-wrap">
-                                <div class="box-image">
-                                    <a href="#"><img src="images/imagebox/4.jpg" alt="images"></a>
+                    foreach ($hotMenuItems as $item) {
+                        $food = $con->getMenuItem($item["MenuItemID"]);
+                        $name = $food[0]["name"];
+                        $image = $food[0]["image"];
+                        $price = $food[0]["price"];
+                        $disc = $food[0]["discount"];
+
+                        if ($disc != 0) {
+                            $price = $price - $price * $disc;
+                        }
+
+                        $price = number_format($price, 2);
+
+                        echo "<div class='item'>
+                        <div class='imagebox effect1'>
+                            <div class='box-wrap'>
+                                <div class='box-image'>
+                                    <a href='#'><img src='images/menu-item/$image' alt='images' style='width:270px;'></a>
                                 </div>
-                                <div class="box-content">
-                                    <h5>PORK WITH ITALIAN SALSA</h5>
+                                <div class='box-content' style='text-align:center'>
+                                    <h5 style='text-transform: uppercase'>$name</h5>
                                     <ul>
-                                        <li>$19.9</li>
-                                        <li>
-                                            <i class="fa fa-heart"></i>
-                                            <i class="fa fa-heart"></i>
-                                            <i class="fa fa-heart"></i>
-                                            <i class="fa fa-heart"></i>
-                                            <i class="fa fa-heart"></i>
-                                        </li>
+                                        <li style='margin-right: 0'>RM$price</li>
+                                        <!--<li>
+                                            <i class='fa fa-heart'></i>
+                                            <i class='fa fa-heart'></i>
+                                            <i class='fa fa-heart'></i>
+                                            <i class='fa fa-heart'></i>
+                                            <i class='fa fa-heart'></i>
+                                        </li>-->
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>";
+                    }
+                    ?>
 
                 </div>
                 <!--row-->
@@ -277,8 +252,6 @@
                         <div class="flat-tabs">
                             <ul class="menu-tab">
                                 <?php
-                                require_once "admin/Database/MenuConnection.php";
-                                $con = MenuConnection::getInstance();
                                 $categories = $con->getMenuCategories(true);
                                 $catCounter = 0;
 

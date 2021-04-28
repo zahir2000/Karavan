@@ -6,6 +6,14 @@ $currentPage = "Menu";
 
 $con = MenuConnection::getInstance();
 $menuItems = $con->getMenuItems();
+$hotMenuItems = $con->getHotMenuItems();
+$hotMenuItemsArr = array();
+$hotMenuCounter = 0;
+if (isset($hotMenuItems)) {
+    foreach ($hotMenuItems as $item) {
+        $hotMenuItemsArr[$hotMenuCounter++] = $item["MenuItemID"];
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -16,6 +24,7 @@ $menuItems = $con->getMenuItems();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="../customtail.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
     <link rel="stylesheet" href="publications.css">
     <script src="../../js/jquery.min.js"></script>
     <script src="../../js/jquery-migrate-3.0.1.min.js"></script>
@@ -28,40 +37,6 @@ $menuItems = $con->getMenuItems();
 
 <body>
     <?php include_once '../Header.php'; ?>
-    <dialog id="new" class="h-auto w-11/12 md:w-1/2 p-5  bg-white rounded-md ">
-        <div class="flex flex-col w-full h-auto ">
-            <!-- Header -->
-            <div class="flex w-full h-auto justify-end items-center">
-                <div class="flex w-10/12 h-auto py-3 justify-center items-center text-2xl font-bold">
-                    New Publication
-                </div>
-                <div onclick="document.getElementById('new').close();" class="flex w-1/12 h-auto justify-center cursor-pointer">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </div>
-                <!--Header End-->
-            </div>
-            <div class="flex justify-center"><span style="width: 25%;" class="h-px bg-gray-400 text-center"></span></div>
-            <!-- Modal Content-->
-            <div class="flex w-full h-auto pb-10 px-2 justify-center items-center bg-white rounded text-center text-gray-500">
-                <div class="grid place-items-center">
-                    <div class="w-11/12 bg-white">
-                        <?php
-                        include_once 'Forms/dropdown.php';
-                        include_once 'Forms/journal.php';
-                        include_once 'Forms/books.php';
-                        include_once 'Forms/book-chapters.php';
-                        include_once 'Forms/conference.php';
-                        include_once 'Forms/others.php';
-                        ?>
-                    </div>
-                </div>
-            </div>
-            <!-- End of Modal Content-->
-        </div>
-    </dialog>
     <section class="homescreen p-10 pt-0 min-h-screen flex md:flex-row text-white items-center justify-around bg-gray-800 flex-wrap sm:flex-col">
         <div class="container mx-auto px-4 sm:px-8">
             <div class="py-8">
@@ -146,50 +121,6 @@ $menuItems = $con->getMenuItems();
                                 </tr>
                             </thead>
                             <tbody>
-                                <!--<tr>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <div class="flex items-center">
-                                            <img src="/karavan/images/menu-item/somsa.jpg" alt="" width="100" class="m-auto">
-                                        </div>
-                                    </td>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">Somsa</p>
-                                    </td>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">Main</p>
-                                    </td>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">
-                                            RM34.90
-                                        </p>
-                                    </td>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">
-                                            0.00
-                                        </p>
-                                    </td>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">
-                                            Meat, Potatoes
-                                        </p>
-                                    </td>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                            <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                            <span class="relative">Active</span>
-                                        </span>
-                                    </td>
-                                    <td class="border-b border-gray-200 bg-white text-sm">
-                                        <div class="flex justify-center">
-                                            <button class="bg-gray-300 mr-1 hover:bg-gray-400 text-gray-800 text-sm font-semibold py-2 px-4 rounded inline-flex items-center">
-                                                <span>Edit</span>
-                                            </button>
-                                            <button class="bg-red-300 hover:bg-gray-400 text-gray-800 text-sm font-semibold py-2 px-4 rounded inline-flex items-center">
-                                                <span>Delete</span>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>-->
                                 <?php
                                 foreach ($menuItems as $item) {
                                     $id = $item["MenuItemID"];
@@ -286,6 +217,18 @@ $menuItems = $con->getMenuItems();
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <?php
+                                                if (in_array($id, $hotMenuItemsArr)) {
+                                                    echo "<a href='HotMenu.php?new=false&id=$id&counter=$hotMenuCounter' class='mr-1 text-gray-800 text-sm font-semibold py-2 px-4 rounded'>
+                                                    <span class='hover:text-red-300 text-red-700'><i class='fa fa-heart'></i></span>
+                                                    </a>";
+                                                } else {
+                                                    echo "<a href='HotMenu.php?new=true&id=$id&counter=$hotMenuCounter' class='mr-1 text-gray-800 text-sm font-semibold py-2 px-4 rounded'>
+                                                    <span class='hover:text-red-600'><i class='far fa-heart'></i></span>
+                                                    </a>";
+                                                }
+                                                ?>
+
                                             </div>
                                         </td>
                                     </tr>

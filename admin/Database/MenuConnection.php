@@ -184,7 +184,7 @@ class MenuConnection
 
     public function getBusinessHours()
     {
-        $query = "SELECT * FROM BusinessHours";
+        $query = "SELECT * FROM businesshours";
 
         $stmt = $this->db->getDb()->prepare($query);
         $stmt->execute();
@@ -212,6 +212,43 @@ class MenuConnection
         $id = "SatSun";
         $stmt->bindParam(1, $sat, PDO::PARAM_STR);
         $stmt->bindParam(2, $id, PDO::PARAM_STR);
+        $stmt->execute();
+    }
+
+    public function getHotMenuItems()
+    {
+        $query = "SELECT * FROM hotmenu";
+
+        $stmt = $this->db->getDb()->prepare($query);
+        $stmt->execute();
+
+        if ($stmt->rowCount() != 0) {
+            $hotmenu = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            $hotmenu = NULL;
+        }
+
+        return $hotmenu;
+    }
+
+    public function addHotMenu($id)
+    {
+        $query = "INSERT INTO hotmenu VALUES(?, ?, ?)";
+        $stmt = $this->db->getDb()->prepare($query);
+
+        $hearts = 4;
+        $autoId = null;
+        $stmt->bindParam(1, $autoId);
+        $stmt->bindParam(2, $id);
+        $stmt->bindParam(3, $hearts, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    public function deleteHotMenu($id)
+    {
+        $query = "DELETE FROM hotmenu WHERE MenuItemID = ?";
+        $stmt = $this->db->getDb()->prepare($query);
+        $stmt->bindParam(1, $id, PDO::PARAM_INT);
         $stmt->execute();
     }
 }
