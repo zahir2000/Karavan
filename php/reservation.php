@@ -16,19 +16,24 @@
 
                                 <div class="title-section">
                                     <div class="top-section">
-                                        <p>Welcome to Karavan Restaurant</p>
+                                        <p>Karavan Restaurant</p>
                                     </div>
                                     <h1 class="title">Business Hours</h1>
                                 </div>
 
-                                <ul>
-                                    <li>Monday to Tuesday <span>09:00 AM - 22:00 PM</span> </li>
-                                    <li>Friday to Sunday <span>11:00 AM - 20:00 PM</span></li>
+                                <?php 
+                                require_once "admin/Database/MenuConnection.php";
+                                $con = MenuConnection::getInstance();
+                                $businessHours = $con->getBusinessHours();
+                                ?>
+                                <ul style="margin-top: 10px; margin-bottom: 25px">
+                                    <li>Monday to Friday <span><?php echo $businessHours[0]["Hours"]; ?></span> </li>
+                                    <li style="padding-left: 10px;">Saturday to Sunday <span><?php echo $businessHours[1]["Hours"]; ?></span></li>
                                 </ul>
 
-                                <h1 class="phone">+12345 678 910</h1>
+                                <h1 class="phone">+603 3678 910</h1>
 
-                                <h3><span>Book a table</span></h3>
+                                <h3 style="margin-bottom: 20px;"><span>Order Online</span></h3>
                                 <div class="foodpanda-button">
                                     <button type="submit" class="book-now-btn">Find us on FoodPanda</button>
                                 </div>
@@ -48,9 +53,17 @@
                                         background: #D60265;
                                         border-color: #D60265;
                                     }
+                                    .foodpanda-button button:hover {
+                                        background: #e9026e;
+                                        border-color: #e9026e;
+                                    }
                                     .grabfood-button button {
                                         background: #1AAE48;
                                         border-color: #1AAE48;
+                                    }
+                                    .grabfood-button button:hover {
+                                        background: #1dc451;
+                                        border-color: #1dc451;
                                     }
                                 </style>
                                 <!--<form id="reservation-form" action="http://corpthemes.com/html/sumi/contact/contact-process.php">

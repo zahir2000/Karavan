@@ -181,4 +181,37 @@ class MenuConnection
         $stmt->bindParam(1, $id, PDO::PARAM_STR);
         $stmt->execute();
     }
+
+    public function getBusinessHours()
+    {
+        $query = "SELECT * FROM BusinessHours";
+
+        $stmt = $this->db->getDb()->prepare($query);
+        $stmt->execute();
+
+        if ($stmt->rowCount() != 0) {
+            $hours = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            $hours = NULL;
+        }
+
+        return $hours;
+    }
+
+    public function updateBusinessHours($mon, $sat)
+    {
+        $query = "UPDATE businesshours SET Hours = ? WHERE BusinessHoursID = ?";
+        $stmt = $this->db->getDb()->prepare($query);
+        $id = "MondayFriday";
+        $stmt->bindParam(1, $mon, PDO::PARAM_STR);
+        $stmt->bindParam(2, $id, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $query = "UPDATE businesshours SET Hours = ? WHERE BusinessHoursID = ?";
+        $stmt = $this->db->getDb()->prepare($query);
+        $id = "SatSun";
+        $stmt->bindParam(1, $sat, PDO::PARAM_STR);
+        $stmt->bindParam(2, $id, PDO::PARAM_STR);
+        $stmt->execute();
+    }
 }

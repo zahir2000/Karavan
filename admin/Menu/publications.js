@@ -1,5 +1,4 @@
 $(document).ready(function () {
-  $("form").hide();
   $("#journal").show();
 
   for (var i = 0; i < 100; i++) {
