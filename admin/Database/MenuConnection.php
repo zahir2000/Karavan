@@ -251,4 +251,31 @@ class MenuConnection
         $stmt->bindParam(1, $id, PDO::PARAM_INT);
         $stmt->execute();
     }
+
+    public function getContactNumber()
+    {
+        $query = "SELECT * FROM contactnumber";
+
+        $stmt = $this->db->getDb()->prepare($query);
+        $stmt->execute();
+
+        if ($stmt->rowCount() != 0) {
+            $contactNo = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            $contactNo = NULL;
+        }
+
+        return $contactNo;
+    }
+
+    public function updateContactNumber($contactNo)
+    {
+        foreach ($contactNo as $number) {
+            $query = "UPDATE contactnumber SET number = ? WHERE ContactNumberID = ?";
+            $stmt = $this->db->getDb()->prepare($query);
+            $stmt->bindParam(1, $number["number"], PDO::PARAM_STR);
+            $stmt->bindParam(2, $number["id"], PDO::PARAM_STR);
+            $stmt->execute();
+        }
+    }
 }

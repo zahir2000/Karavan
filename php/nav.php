@@ -6,7 +6,7 @@
                                         <li ><a href="index.html">Home 1</a></li>
                                     </ul> /.submenu 
                                 </li> -->
-        <li> <a href="menu.html">Menu</a>
+        <li> <a href="menu.php">Menu</a>
             <!--<ul class="submenu"> 
                                         <li ><a href="menu.html">Menu</a></li>
                                         <li ><a href="menu-single.html">Menu Single</a></li>
@@ -21,7 +21,7 @@
         <!--<li> <a href="reservation.html">Reservation </a></li>
                                 <li> <a href="shop.html">Shop</a></li>-->
         <li class="logo">
-            <a href="index.html"> <img src="images/Karavan.png" alt="image" width="137"></a>
+            <a href="index.php"> <img src="images/Karavan.png" alt="image" width="137"></a>
         </li>
         <li class="has-sub"> <a href="about.html">About Us</a></li>
         <!--<li><a href="#">Page</a>
